@@ -7,6 +7,6 @@ public class ProjectFile
     public string Path { get; set; } = string.Empty;
     
     public string Extension { get; set; } = string.Empty;
-    
-    public string Contents { get; set; } = string.Empty;
+
+    public List<string> Contents { get; set; } = new List<string>();
 }

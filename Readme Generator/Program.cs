@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Readme_Generator.Models;
+using Readme_Generator.Readers;
 using Readme_Generator.Scanner;
 
 
@@ -42,6 +43,21 @@ public class Run
         Console.WriteLine("Files from root");
         var f = scanner.FilesFromRoot(root);
         foreach (var file in f){
-            Console.WriteLine(" - " + file.Name);}
+            Console.WriteLine(" - " + file.Name);
+            
+        }
+        
+        ProjectReader reader = new ProjectReader();
+        List<ProjectFile> data = reader.ReadRootFiles(root, f);
+        Console.WriteLine();
+        Console.WriteLine("Files from root");
+        foreach (var file in data)
+        {
+            Console.WriteLine(" ##### " + file.Name);
+            foreach (var line in file.Contents)
+            {
+                Console.WriteLine(line);
+            }
+        }
     } 
 }
