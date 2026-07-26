@@ -1,9 +1,11 @@
+using Readme_Generator.Models;
+
 namespace Readme_Generator.Scanner;
 
 public class ProjectScanner
 {
     
-    public List<string> FoldersToIgnore(string directories)
+    public List<ProjectFile> FoldersToIgnore(string directories)
     {
         var folders = Directory.GetDirectories(directories);
 
@@ -13,7 +15,7 @@ public class ProjectScanner
             "bin",
             "obj"
         };
-        var f = new List<string>();
+        var f = new List<ProjectFile>();
         foreach (var folder in folders)
         {
             var folderName = Path.GetFileName(folder);
@@ -27,35 +29,44 @@ public class ProjectScanner
             
             Console.WriteLine("Scanning " + folderName);
 
-           f.Add(folderName);
+           f.Add(new ProjectFile
+           {
+               Name = folderName,
+           });
         }
 
         return f;
     }
 
-    public List<string> FilesFromRoot(string root)
+    public List<ProjectFile> FilesFromRoot(string root)
     {
         var files = Directory.GetFiles(root);
-        List<string> f = new List<string>();
+        List<ProjectFile> f = new List<ProjectFile>();
         foreach (var file in files)
         {
             var t = Path.GetFileName(file);
-            f.Add(t);
+            f.Add(new ProjectFile
+            {
+                Name = t,
+            });
         }
 
         return f;
     }
     
-    public List<string> GetFilesFromRootFolders(string root, string directory)
+    public List<ProjectFile> GetFilesFromRootFolders(string root, string directory)
     {
         var folderPath = Path.Combine(root, directory);
         var files = Directory.GetFiles(folderPath);
         
-        var f = new List<string>();
+        var f = new List<ProjectFile>();
         foreach (var file in files)
         {
             var t = Path.GetFileName(file);
-            f.Add(t);
+            f.Add(new ProjectFile
+            {
+                Name = t,
+            });
         }
 
         

@@ -1,4 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
+
+using Readme_Generator.Models;
 using Readme_Generator.Scanner;
 
 
@@ -16,22 +18,22 @@ public class Run
         ProjectScanner scanner = new ProjectScanner();
         
         Console.WriteLine("Scanning " + root);
-        List<string> folders =scanner.FoldersToIgnore(root);
+        List<ProjectFile> folders = scanner.FoldersToIgnore(root);
         
         Console.WriteLine();
         
         Console.WriteLine("Retrieving files from directory ");
-        foreach (string folder in folders)
+        foreach (ProjectFile folder in folders)
         {
-            var files = scanner.GetFilesFromRootFolders(root, folder);
+            var files = scanner.GetFilesFromRootFolders(root, folder.Name);
             
-            Console.WriteLine("Found " + files.Count + " files" + $" from folder: {folder}" );    
+            Console.WriteLine("Found " + files.Count + " files" + $" from folder: {folder.Name}" );    
           
             
-            foreach (string file in files)
+            foreach (ProjectFile file in files)
             {
                 
-                Console.WriteLine(" - " + file);
+                Console.WriteLine(" - " + file.Name);
             }
             
             Console.WriteLine();
@@ -40,6 +42,6 @@ public class Run
         Console.WriteLine("Files from root");
         var f = scanner.FilesFromRoot(root);
         foreach (var file in f){
-            Console.WriteLine(" - " + file);}
+            Console.WriteLine(" - " + file.Name);}
     } 
 }

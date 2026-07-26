@@ -10,7 +10,6 @@
 
     <ItemGroup>
       <Folder Include="Generators\" />
-      <Folder Include="Models\" />
     </ItemGroup>
 
 </Project>
