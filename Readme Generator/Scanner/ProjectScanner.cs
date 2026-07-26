@@ -13,7 +13,14 @@ public class ProjectScanner
         {
             "node_modules",
             "bin",
-            "obj"
+            "obj",
+            ".git",
+            "dist",
+            "build",
+            "target",
+            "venv",
+            "__pycache__",
+            "lib",
         };
         var f = new List<ProjectFile>();
         foreach (var folder in folders)
