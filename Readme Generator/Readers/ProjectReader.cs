@@ -17,6 +17,11 @@ public class ProjectReader
             
            
             var extension = Path.GetExtension(file.Name);
+            if(file.Name.StartsWith(".")) continue;
+            
+            // TO BE REMOVED LATER NOW IT'S BEING USED TO IGNORE A LARGE TEXT FILE OF THE CURRENT PROJECT CREATOR
+            if (extension == ".txt" || extension == ".md")
+                continue;
             
             if (extension == ".cs" || files.Any(f => f.Name.Contains(".csproj")))
             {
@@ -32,7 +37,7 @@ public class ProjectReader
             }
             else if(extension == ".json" && file.Name == "package.json")
             {
-                var document = JsonDocument.Parse(file.Name);
+                var document = JsonDocument.Parse(File.ReadAllText(r));
                 if (document.RootElement.TryGetProperty("dependencies", out JsonElement dependencies))
                 {
                     Console.WriteLine("This is a Node.js based project .");
@@ -88,5 +93,20 @@ public class ProjectReader
         }
 
         return projectFiles;
+    }
+    
+    public ProjectSummary ProjectSummary(string root, List<ProjectFile> files)
+    {
+        List<ProjectFile> data = ReadRootFiles(root, files);
+
+        var projectName = Path.GetFileName(root);
+
+        ProjectSummary summary = new ProjectSummary();
+
+        summary.Name = projectName!;
+        summary.Files = data;
+   
+        
+        return summary;
     }
 }

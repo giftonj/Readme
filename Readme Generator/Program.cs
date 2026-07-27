@@ -59,5 +59,23 @@ public class Run
                 Console.WriteLine(line);
             }
         }
+        Console.WriteLine();
+        
+        Console.WriteLine("Summary from root");
+        ProjectSummary summaries = reader.ProjectSummary(root, f);
+       
+        Console.WriteLine("Project Name");
+        Console.WriteLine(" - " + summaries.Name);
+
+        Console.WriteLine("Project Files");
+        if (summaries.Files.Count > 0)
+        {
+            foreach (var file in summaries.Files)
+            {
+                Console.WriteLine(" - " + file.Name);
+                    
+            }
+        }
+        
     } 
 }
