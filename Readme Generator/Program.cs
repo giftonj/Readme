@@ -23,6 +23,26 @@ public class Run
         
         Console.WriteLine();
         
+        Console.WriteLine("Subfolders from root");
+
+        foreach (var folder in folders)
+        {
+            Console.WriteLine(folder.Name);
+            var subFolders = scanner.ProjectSubFolders(root, folder.Name);
+            
+            foreach (var subFolder in subFolders)
+            {
+                var relative = Path.GetRelativePath(root, subFolder.Name);
+
+                int depth = relative.Split(Path.DirectorySeparatorChar).Length - 1;
+
+                Console.WriteLine($"{new string('-', depth * 2)} {Path.GetFileName(subFolder.Name)}");
+            }
+        }
+        
+        
+        Console.WriteLine();
+        
         Console.WriteLine("Retrieving files from directory ");
         foreach (ProjectFile folder in folders)
         {

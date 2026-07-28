@@ -45,6 +45,25 @@ public class ProjectScanner
         return f;
     }
 
+    public List<ProjectFile> ProjectSubFolders(string root, string folders)
+    {
+        List<ProjectFile> name = new List<ProjectFile>();
+       
+        var folderPath = Path.Combine(root, folders);
+        var sub =  Directory.GetDirectories(folderPath, "*", SearchOption.AllDirectories);
+
+        foreach (var subFolder in sub)
+        {
+            name.Add(new ProjectFile
+                {
+                    Name = subFolder,
+                }
+            );
+        }
+        
+        return name;
+    }
+
     public List<ProjectFile> FilesFromRoot(string root)
     {
         var files = Directory.GetFiles(root);
