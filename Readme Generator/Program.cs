@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using Readme_Generator.Generators;
 using Readme_Generator.Models;
 using Readme_Generator.Readers;
 using Readme_Generator.Scanner;
@@ -8,7 +9,7 @@ using Readme_Generator.Scanner;
 public class Run
 {
   
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         ProjectRootFinder finder = new ProjectRootFinder();
 
@@ -24,6 +25,7 @@ public class Run
         Console.WriteLine();
         
         Console.WriteLine("Subfolders from root");
+        List<string> subfoldersFromRoot = new List<string>();
 
         foreach (var folder in folders)
         {
@@ -33,8 +35,13 @@ public class Run
             foreach (var subFolder in subFolders)
             {
                 var relative = Path.GetRelativePath(root, subFolder.Name);
+                subfoldersFromRoot.Add(relative);
 
                 int depth = relative.Split(Path.DirectorySeparatorChar).Length - 1;
+                
+                // subfoldersFromRoot.Add(
+                //     $"{new string('-', depth * 2)} {Path.GetFileName(subFolder.Name)}"
+                // );
 
                 Console.WriteLine($"{new string('-', depth * 2)} {Path.GetFileName(subFolder.Name)}");
             }
@@ -81,6 +88,17 @@ public class Run
         }
         Console.WriteLine();
         
+        var sourceCode = string.Join(
+            "\n\n",
+            data.Select(file =>
+                $"""
+                 File: {file.Name}
+
+                 {string.Join("\n", file.Contents)}
+
+                 ----------------------------------------
+                 """));
+        
         Console.WriteLine("Summary from root");
         ProjectSummary summaries = reader.ProjectSummary(root, f);
        
@@ -97,5 +115,45 @@ public class Run
             }
         }
         
+        var apiKey = "**********************************";
+
+        var mistral = new MistralClient(apiKey);
+        
+        var prompt = $$"""
+                       You are an expert technical writer.
+                       
+                       Generate a professional README for the following project but also tell me if the current files are good.
+                       
+                       ProjectName:
+                       {{summaries.Name}}
+                       
+                       Root Folders:
+                       {{string.Join("\n", folders.Select(folder => "-" + folder.Name) )}}
+                       
+                       Subfolders:
+                       {{string.Join("\n", subfoldersFromRoot.Select(folder => "- " + folder))}}
+                       
+                       
+                       Root Files:
+                       {{string.Join("\n", f.Select(file => "-" + file.Name))}}
+                       
+                       SourceCode from Root Files:
+                       {{sourceCode}}
+                       
+                       Project Summary:
+                       {{summaries.Files}}
+                       
+                       Instructions:
+                       - Explain what this project does.
+                       - Suggest a better folder structure if needed.
+                       - Point out missing files.
+                       - Suggest improvements.
+                       - Generate a README.md.
+                       
+                       """;
+        
+        string answer = await mistral.AskAsync(prompt);
+        Console.WriteLine(answer);
+
     } 
 }
