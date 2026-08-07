@@ -92,6 +92,7 @@ public class ProjectScanner
             f.Add(new ProjectFile
             {
                 Name = t,
+                FolderName = directory
             });
         }
 
