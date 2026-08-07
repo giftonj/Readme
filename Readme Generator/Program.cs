@@ -51,9 +51,12 @@ public class Run
         Console.WriteLine();
         
         Console.WriteLine("Retrieving files from directory ");
+        List<ProjectFile> filesFromRootFolders = new List<ProjectFile>();
         foreach (ProjectFile folder in folders)
         {
             var files = scanner.GetFilesFromRootFolders(root, folder.Name);
+            
+            filesFromRootFolders.AddRange(files.Select(file => file));
             
             Console.WriteLine("Found " + files.Count + " files" + $" from folder: {folder.Name}" );    
           
@@ -115,6 +118,7 @@ public class Run
             }
         }
         
+        Console.WriteLine("Response from the AI");
         var apiKey = "**********************************";
 
         var mistral = new MistralClient(apiKey);
@@ -132,6 +136,9 @@ public class Run
                        
                        Subfolders:
                        {{string.Join("\n", subfoldersFromRoot.Select(folder => "- " + folder))}}
+                       
+                       Files from Root subfolders:
+                       {{string.Join("\n", filesFromRootFolders.Select(file => "- " + file.FolderName + "/" + file.Name))}}
                        
                        
                        Root Files:
