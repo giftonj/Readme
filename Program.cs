@@ -8,22 +8,22 @@ using Readme_Generator.Scanner;
 
 public class Run
 {
-  
+
     public static async Task Main(string[] args)
     {
         ProjectRootFinder finder = new ProjectRootFinder();
 
         string root = finder.ReadProject();
-        
+
         Console.WriteLine("The root path is: " + root);
-        
+
         ProjectScanner scanner = new ProjectScanner();
-        
+
         Console.WriteLine("Scanning " + root);
         List<ProjectFile> folders = scanner.FoldersToIgnore(root);
-        
+
         Console.WriteLine();
-        
+
         Console.WriteLine("Subfolders from root");
         List<string> subfoldersFromRoot = new List<string>();
 
@@ -31,14 +31,14 @@ public class Run
         {
             Console.WriteLine(folder.Name);
             var subFolders = scanner.ProjectSubFolders(root, folder.Name);
-            
+
             foreach (var subFolder in subFolders)
             {
                 var relative = Path.GetRelativePath(root, subFolder.Name);
                 subfoldersFromRoot.Add(relative);
 
                 int depth = relative.Split(Path.DirectorySeparatorChar).Length - 1;
-                
+
                 // subfoldersFromRoot.Add(
                 //     $"{new string('-', depth * 2)} {Path.GetFileName(subFolder.Name)}"
                 // );
@@ -46,37 +46,38 @@ public class Run
                 Console.WriteLine($"{new string('-', depth * 2)} {Path.GetFileName(subFolder.Name)}");
             }
         }
-        
-        
+
+
         Console.WriteLine();
-        
+
         Console.WriteLine("Retrieving files from directory ");
         List<ProjectFile> filesFromRootFolders = new List<ProjectFile>();
         foreach (ProjectFile folder in folders)
         {
             var files = scanner.GetFilesFromRootFolders(root, folder.Name);
-            
+
             filesFromRootFolders.AddRange(files.Select(file => file));
-            
-            Console.WriteLine("Found " + files.Count + " files" + $" from folder: {folder.Name}" );    
-          
-            
+
+            Console.WriteLine("Found " + files.Count + " files" + $" from folder: {folder.Name}");
+
+
             foreach (ProjectFile file in files)
             {
-                
+
                 Console.WriteLine(" - " + file.Name);
             }
-            
+
             Console.WriteLine();
         }
-        
+
         Console.WriteLine("Files from root");
         var f = scanner.FilesFromRoot(root);
-        foreach (var file in f){
+        foreach (var file in f)
+        {
             Console.WriteLine(" - " + file.Name);
-            
+
         }
-        
+
         ProjectReader reader = new ProjectReader();
         List<ProjectFile> data = reader.ReadRootFiles(root, f);
         Console.WriteLine();
@@ -90,7 +91,7 @@ public class Run
             }
         }
         Console.WriteLine();
-        
+
         var sourceCode = string.Join(
             "\n\n",
             data.Select(file =>
@@ -101,10 +102,10 @@ public class Run
 
                  ----------------------------------------
                  """));
-        
+
         Console.WriteLine("Summary from root");
         ProjectSummary summaries = reader.ProjectSummary(root, f);
-       
+
         Console.WriteLine("Project Name");
         Console.WriteLine(" - " + summaries.Name);
 
@@ -114,15 +115,15 @@ public class Run
             foreach (var file in summaries.Files)
             {
                 Console.WriteLine(" - " + file.Name);
-                    
+
             }
         }
-        
+
         Console.WriteLine("Response from the AI");
-        var apiKey = "**********************************";
+        var apiKey = "***************************";
 
         var mistral = new MistralClient(apiKey);
-        
+
         var prompt = $$"""
                        You are an expert technical writer.
                        
@@ -132,7 +133,7 @@ public class Run
                        {{summaries.Name}}
                        
                        Root Folders:
-                       {{string.Join("\n", folders.Select(folder => "-" + folder.Name) )}}
+                       {{string.Join("\n", folders.Select(folder => "-" + folder.Name))}}
                        
                        Subfolders:
                        {{string.Join("\n", subfoldersFromRoot.Select(folder => "- " + folder))}}
@@ -158,9 +159,9 @@ public class Run
                        - Generate a README.md.
                        
                        """;
-        
+
         string answer = await mistral.AskAsync(prompt);
         Console.WriteLine(answer);
 
-    } 
+    }
 }
