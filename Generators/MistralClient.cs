@@ -37,6 +37,13 @@ public class MistralClient
 
         var responseJson = await response.Content.ReadAsStringAsync();
         
+        if (!response.IsSuccessStatusCode)
+        {
+            throw new Exception(
+                $"Mistral API error ({response.StatusCode}): {responseJson}");
+        }
+
+        
         var result = JsonSerializer.Deserialize<ChatResponse>(responseJson);
 
         //Console.WriteLine(response.StatusCode);
