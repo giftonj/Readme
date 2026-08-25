@@ -17,10 +17,11 @@ public class ProjectReader
             
            
             var extension = Path.GetExtension(file.Name);
+            var fileName = Path.GetFileNameWithoutExtension(file.Name);
             if(file.Name.StartsWith(".")) continue;
             
             // TO BE REMOVED LATER NOW IT'S BEING USED TO IGNORE A LARGE TEXT FILE OF THE CURRENT PROJECT CREATOR
-            if (extension == ".txt" || extension == ".md")
+            if (extension == ".txt" || fileName == "Documentation.md")
                 continue;
             
             if (extension == ".cs" || files.Any(f => f.Name.Contains(".csproj")))
@@ -108,5 +109,26 @@ public class ProjectReader
    
         
         return summary;
+    }
+
+    public List<ProjectFile> GetMdFile(string path, List<ProjectFile> fileNames)
+    {
+        List<ProjectFile> contents = new List<ProjectFile>();
+        
+        foreach (var file in fileNames)
+        {
+            if (file.Name.Equals("README.md"))
+            {
+                var content = Path.Combine(path,  file.Name);
+                   var f = File.ReadAllLines(content);
+                
+                contents.Add(new ProjectFile
+                {
+                    Contents =  f.ToList(),
+                });
+            }
+        }
+        
+        return contents;
     }
 }
