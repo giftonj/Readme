@@ -5,8 +5,14 @@
         <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>Readme_Generator</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-      <UserSecretsId>44d166d9-d09c-4acc-89cc-b6c61225f3dc</UserSecretsId>
+        
+        <Nullable>enable</Nullable><PackAsTool>true</PackAsTool>
+        <ToolCommandName>readme</ToolCommandName>
+
+        <PackageId>ReadmeGenerator</PackageId>
+        <Version>1.0.0</Version>
+        
+        <UserSecretsId>44d166d9-d09c-4acc-89cc-b6c61225f3dc</UserSecretsId>
   </PropertyGroup>
 
     <ItemGroup>
