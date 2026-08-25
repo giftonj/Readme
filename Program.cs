@@ -1,5 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
+// See https://aka.ms/new-console-template for more information
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Readme_Generator.Generators;
 using Readme_Generator.Models;
 using Readme_Generator.Readers;
@@ -11,6 +13,18 @@ public class Run
 
     public static async Task Main(string[] args)
     {
+        var builder = Host.CreateApplicationBuilder(args);
+
+        builder.Configuration.AddUserSecrets<Run>();
+
+        var apiKey = builder.Configuration["MistralAPi:ApiKey"];
+        
+        if (string.IsNullOrWhiteSpace(apiKey))
+        {
+            Console.WriteLine("API KEY NOT FOUND");
+            return;
+        }
+        
         ProjectRootFinder finder = new ProjectRootFinder();
 
         string root = finder.ReadProject();
@@ -92,6 +106,8 @@ public class Run
         }
         Console.WriteLine();
 
+       var readme = reader.GetMdFile(root, data);
+
         var sourceCode = string.Join(
             "\n\n",
             data.Select(file =>
@@ -120,7 +136,7 @@ public class Run
         }
 
         Console.WriteLine("Response from the AI");
-        var apiKey = "***************************";
+        
 
         var mistral = new MistralClient(apiKey);
 
@@ -145,6 +161,10 @@ public class Run
                        Root Files:
                        {{string.Join("\n", f.Select(file => "-" + file.Name))}}
                        
+                       If the Readme part is not empty read from it first the add things that seem like they are not added there from the current source code.
+                       ReadMe.md:
+                       {{string.Join("\n", readme.Select(c => c.Contents))}}
+                       
                        SourceCode from Root Files:
                        {{sourceCode}}
                        
@@ -157,11 +177,17 @@ public class Run
                        - Point out missing files.
                        - Suggest improvements.
                        - Generate a README.md.
+                       - In the response don't start with "Here's a professional README for your **Readme Generator** project, incorporating feedback and improvements based on your current implementation:" just go straight to the README.md content.
                        
                        """;
 
         string answer = await mistral.AskAsync(prompt);
         Console.WriteLine(answer);
+        
+        MdFileCreator creator = new MdFileCreator();
+        
+        creator.CreateMdFile(root, answer);
+        
 
     }
 }
