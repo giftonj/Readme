@@ -18,7 +18,7 @@ public class MistralClient
     {
         var request = new
         {
-            model = "mistral-large-latest",
+            model = "ministral-8b-2512",
             messages = new[]
             {
                 new
