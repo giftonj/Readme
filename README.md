@@ -116,8 +116,8 @@ The project follows a modular architecture with clear separation of concerns:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/giftonj/readme-generator.git
-   cd readme-generator
+   git clone https://github.com/giftonj/readme.git
+   cd readme
    ```
 
 2. Configure your Mistral API key:
