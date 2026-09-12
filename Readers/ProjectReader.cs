@@ -5,12 +5,20 @@ namespace Readme_Generator.Readers;
 
 public class ProjectReader
 {
+    private FilesToIgnore dat = new FilesToIgnore();
+    
     public List<ProjectFile> ReadRootFiles(string root, List<ProjectFile> files)
     {
         List<ProjectFile> projectFiles = new List<ProjectFile>();
         foreach (var file in files)
         {
             var r = Path.Combine(root, file.Name);
+
+            if (dat.Files().Contains(r))
+            {
+                Console.WriteLine("Skipping " + file.Name);
+                continue;
+            }
 
             string[] lines = File.ReadAllLines(r);
             Console.WriteLine($"Reading: {file.Name}");

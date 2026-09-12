@@ -10,7 +10,7 @@
         <ToolCommandName>readme</ToolCommandName>
 
         <PackageId>ReadmeGenerator</PackageId>
-        <Version>1.0.0</Version>
+        <Version>1.0.2</Version>
         
         <UserSecretsId>44d166d9-d09c-4acc-89cc-b6c61225f3dc</UserSecretsId>
   </PropertyGroup>
