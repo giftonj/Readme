@@ -12,14 +12,14 @@ An intelligent tool that automatically generates comprehensive, well-structured 
 
 ## 🚀 Features
 
-✅ **Automated Project Analysis** - Scans folder structures, file contents, and project metadata
-✅ **AI-Powered Documentation** - Generates professional README content using Mistral AI
-✅ **Smart Recommendations** - Identifies missing files and suggests structural improvements
-✅ **Code Understanding** - Analyzes source code to generate context-aware documentation
-✅ **Multi-Level Scanning** - Handles nested folder structures with depth visualization
-✅ **Existing Content Integration** - Preserves and enhances existing README content
-✅ **Secure Configuration** - Uses user secrets for API key management
-✅ **Modular Architecture** - Clear separation of scanning, reading, and generation components
+- **Automated Project Analysis** - Scans folder structures, file contents, and project metadata
+- **AI-Powered Documentation** - Generates professional README content using Mistral AI
+- **Smart Recommendations** - Identifies missing files and suggests structural improvements
+- **Code Understanding** - Analyzes source code to generate context-aware documentation
+- **Multi-Level Scanning** - Handles nested folder structures with depth visualization
+- **Existing Content Integration** - Preserves and enhances existing README content
+- **Secure Configuration** - Uses user secrets for API key management
+- **Modular Architecture** - Clear separation of scanning, reading, and generation components
 
 ---
 
