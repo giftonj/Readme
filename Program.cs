@@ -3,6 +3,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Readme_Generator.Generators;
+using Readme_Generator.Generators.Prompts;
 using Readme_Generator.Models;
 using Readme_Generator.Readers;
 using Readme_Generator.Scanner;
@@ -77,7 +78,6 @@ public class Run
 
             foreach (ProjectFile file in files)
             {
-
                 Console.WriteLine(" - " + file.Name);
             }
 
@@ -99,10 +99,6 @@ public class Run
         foreach (var file in data)
         {
             Console.WriteLine(" ##### " + file.Name);
-            foreach (var line in file.Contents)
-            {
-                Console.WriteLine(line);
-            }
         }
         Console.WriteLine();
 
@@ -137,54 +133,19 @@ public class Run
 
         Console.WriteLine("Response from the AI");
         
-
         var mistral = new MistralClient(apiKey);
+        
+        BasePrompt basePrompt = new BasePrompt();
 
-        var prompt = $$"""
-                       You are an expert technical writer.
-                       
-                       Generate a professional README for the following project but also tell me if the current files are good.
-                       
-                       ProjectName:
-                       {{summaries.Name}}
-                       
-                       Root Folders:
-                       {{string.Join("\n", folders.Select(folder => "-" + folder.Name))}}
-                       
-                       Subfolders:
-                       {{string.Join("\n", subfoldersFromRoot.Select(folder => "- " + folder))}}
-                       
-                       Files from Root subfolders:
-                       {{string.Join("\n", filesFromRootFolders.Select(file => "- " + file.FolderName + "/" + file.Name))}}
-                       
-                       
-                       Root Files:
-                       {{string.Join("\n", f.Select(file => "-" + file.Name))}}
-                       
-                       If the Readme part is not empty read from it first the add things that seem like they are not added there from the current source code.
-                       ReadMe.md:
-                       {{string.Join("\n", readme.Select(c => c.Contents))}}
-                       
-                       SourceCode from Root Files:
-                       {{sourceCode}}
-                       
-                       Project Summary:
-                       {{summaries.Files}}
-                       
-                       Instructions:
-                       - Explain what this project does.
-                       - Suggest a better folder structure if needed.
-                       - Point out missing files.
-                       - Suggest improvements.
-                       - Generate a README.md.
-                       - In the response don't start with "Here's a professional README for your **Readme Generator** project, incorporating feedback and improvements based on your current implementation:" just go straight to the README.md content.
-                       
-                       """;
+        var prompt = basePrompt.BasicPrompt(summaries, folders, subfoldersFromRoot, filesFromRootFolders, f, readme,
+            sourceCode);
 
         string answer = await mistral.AskAsync(prompt);
         Console.WriteLine(answer);
         
         MdFileCreator creator = new MdFileCreator();
+        
+        Console.WriteLine("Creating MdFile");
         
         creator.CreateMdFile(root, answer);
         
