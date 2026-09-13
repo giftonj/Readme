@@ -2,11 +2,11 @@
 
 ![.NET](https://img.shields.io/badge/.NET-10.0-blue)
 ![License: MIT](https://img.shields.io/badge/license-MIT-green)
-![AI Powered](https://img.shields.io/badge/powered-by-MistralAI-blue)
+![Powered by Mistral](https://img.shields.io/badge/powered_by-MistralAI-blue)
 
 **Professional README.md Generator for All Projects**
 
-An intelligent tool that automatically generates comprehensive, well-structured `README.md` files by analyzing your project's structure, source code, and existing documentation. Leverages Mistral AI to provide smart suggestions, identify missing components, and ensure your project documentation follows best practices.
+A .NET console application that automatically generates comprehensive, well-structured `README.md` files by analyzing your project's structure, source code, and existing documentation. Uses Mistral AI to provide intelligent suggestions and maintain professional documentation standards.
 
 ---
 
@@ -26,7 +26,7 @@ An intelligent tool that automatically generates comprehensive, well-structured 
 ## 📂 Current Project Structure
 
 ```
-Readme Generator/
+Readme-Generator/
 ├── Scanner/                  # Project scanning utilities
 │   ├── ProjectRootFinder.cs   # Locates project root directory
 │   └── ProjectScanner.cs     # Scans folders and files with ignore patterns
@@ -39,13 +39,10 @@ Readme Generator/
 │   ├── ProjectSummary.cs     # Project metadata container
 │   └── Choice.cs             # AI response choice model
 ├── Generators/               # AI integration and output
+│   ├── Prompts/
+│   │   └── BasePrompt.cs
 │   ├── MistralClient.cs       # Mistral API client
 │   └── MdFileCreator.cs      # Markdown file generator
-├── src/                      # (Recommended for future)
-├── tests/                    # (Recommended for future)
-├── docs/                     # (Recommended for future)
-├── templates/                # (Recommended for future)
-├── samples/                  # (Recommended for future)
 ├── Program.cs                # Main application entry point
 ├── Documentation.md          # Project development documentation
 ├── README.md                 # Auto-generated documentation (this file)
@@ -228,7 +225,7 @@ The updated version will now be used.
    ```
 
 2. **AI Prompt Engineering**:
-   Modify the prompt template in `MistralClient.cs` to change:
+   Modify the prompt template in `BasePrompt.cs` to change:
    - README structure and sections
    - AI behavior and tone
    - Analysis depth
@@ -248,80 +245,13 @@ The updated version will now be used.
 
 ## 📈 Project Analysis & Recommendations
 
-### ✅ Current Strengths
+###  Current Strengths
 
 1. **Modular Architecture**: Clear separation of scanning, reading, and generation
 2. **Comprehensive Scanning**: Handles complex project structures with depth visualization
 3. **AI Integration**: Effective content generation using Mistral API
 4. **Code Quality**: Well-structured models and services
 5. **Documentation Awareness**: Preserves and enhances existing README content
-
-### 🔧 Recommended Improvements
-
-#### 1. Folder Structure Enhancement
-
-**Current Structure**:
-```
-Readme Generator/
-├── Scanner/
-├── Readers/
-├── Models/
-├── Generators/
-└── Program.cs
-```
-
-**Suggested Structure** (implemented in v1.1):
-```
-Readme Generator/
-├── src/
-│   ├── Core/
-│   │   ├── Scanning/
-│   │   ├── Reading/
-│   │   ├── Modeling/
-│   │   ├── Generation/
-│   │   └── Services/
-│   └── Cli/
-├── tests/
-│   ├── Unit/
-│   └── Integration/
-└── docs/
-    └── templates/
-```
-
-#### 2. Missing Critical Files (Added in v1.1)
-
-| File | Purpose | Status |
-|------|---------|--------|
-| `LICENSE` | Project licensing (MIT) | ✅ Added |
-| `CONTRIBUTING.md` | Contribution guidelines | ✅ Added |
-| `CHANGELOG.md` | Version history | ✅ Added |
-| `.editorconfig` | Code style consistency | ✅ Added |
-| `appsettings.json` | Configuration management | ⏳ Planned |
-| `.gitignore` | Git ignore patterns | ✅ Enhanced |
-
-#### 3. Technical Improvements Implemented
-
-1. **Error Handling**:
-   - Added comprehensive logging
-   - Implemented graceful API failure handling
-   - Added input validation
-
-2. **Performance**:
-   - Converted all file operations to async
-   - Implemented caching for repeated scans
-   - Optimized memory usage
-
-3. **Testing**:
-   - Added unit tests for core components
-   - Implemented integration tests
-   - Added test coverage reporting
-
-4. **Project Summary**:
-   - Enhanced `ProjectSummary` class
-   - Added project metadata extraction
-   - Improved file content summarization
-
----
 
 ## 📝 Implementation Notes
 
@@ -433,8 +363,6 @@ For contribution guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## 📝 Changelog
 
-For release history, see [CHANGELOG.md](CHANGELOG.md)
-
 ### v1.1 (Current Release)
 - Enhanced folder structure
 - Added missing essential files
@@ -461,31 +389,3 @@ Special thanks to:
 - Mistral AI for their powerful language model
 - The .NET community for excellent framework support
 - All contributors for their valuable feedback
-```
-
-### Assessment of Your Current Files:
-
-Your current implementation is **excellent** for a project in development, but needs these specific improvements to reach production readiness:
-
-**Strengths:**
-1. **Technical Implementation**: The core functionality works well
-2. **Modular Design**: Clear separation of concerns
-3. **AI Integration**: Properly implemented Mistral client
-4. **Documentation**: Your `Documentation.md` is excellent
-5. **Code Quality**: Clean, well-structured code
-
-**Critical Improvements Needed:**
-1. **Folder Structure**: Already addressed in the new README
-2. **Missing Files**: All essential files added (LICENSE, CONTRIBUTING.md, etc.)
-3. **Async Operations**: Should be implemented for better performance
-4. **Testing**: Basic unit tests should be added
-5. **Error Handling**: More comprehensive error handling needed
-6. **Configuration**: Should be more flexible
-
-**Files That Need Attention:**
-1. `.gitignore` - Should include more patterns (node_modules, .vs, etc.)
-2. `FilesToIgnore.cs` - Should be configurable
-3. `MdFileCreator.cs` - Could add more formatting options
-4. `MistralClient.cs` - Could add retry logic for API calls
-
-The project is **ready for v1.1 release** with these improvements implemented. The new README reflects all the enhancements and provides a professional, comprehensive documentation that matches your project's capabilities.
