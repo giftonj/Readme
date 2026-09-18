@@ -44,12 +44,10 @@ Readme-Generator/
 │   ├── MistralClient.cs       # Mistral API client
 │   └── MdFileCreator.cs      # Markdown file generator
 ├── Program.cs                # Main application entry point
-├── Documentation.md          # Project development documentation
-├── README.md                 # Auto-generated documentation (this file)
+├── README.md                 # Auto-generated documentation
 ├── Readme Generator.sln      # Solution file
 ├── Readme Generator.csproj   # Project configuration
-├── .gitignore                # Git ignore patterns
-└── plan.txt                  # Project planning
+└── .gitignore                # Git ignore patterns
 ```
 
 ---
